@@ -36,6 +36,9 @@ public class PedidoService {
 	
 	@Autowired
 	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EmailService emailService;
 
 	public Pedido find(Integer id) {
 		Pedido obj = this.repository.findOne(id);
@@ -51,7 +54,7 @@ public class PedidoService {
 		obj.setId(null);
 		obj.setInstante(new Date());
 		obj.setCliente(this.clienteRepository.findOne(obj.getCliente().getId()));
-		obj.getPagamento().setEstado(EstadoPagamento.PENDENETE);
+		obj.getPagamento().setEstado(EstadoPagamento.PENDENTE);
 		obj.getPagamento().setPedido(obj);
 
 		if (obj.getPagamento() instanceof PagamentoComBoleto) {
@@ -70,6 +73,7 @@ public class PedidoService {
 		}
 
 		this.itemPedidoRepository.save(obj.getItens());
+		this.emailService.sendOrderConfirmationEmail(obj);
 		return obj;
 	}
 

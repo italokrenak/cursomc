@@ -2,7 +2,7 @@ package com.nelioalves.cursomc.domain.enums;
 
 public enum EstadoPagamento {
 
-	PENDENETE(1, "pendenete"), QUITADO(2, "Quitado"), CANCELADO(3, "Cancelado");
+	PENDENTE(1, "pendente"), QUITADO(2, "Quitado"), CANCELADO(3, "Cancelado");
 
 	private Integer codigo;
 	private String descricao;

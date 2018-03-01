@@ -142,7 +142,7 @@ public class DBService {
 		Pagamento pagt1 = new PagamentoComCartao(null, EstadoPagamento.QUITADO, ped1, 6);
 		ped1.setPagamento(pagt1);
 
-		Pagamento pagt2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENETE, ped2, sdf.parse("20/10/2017 00:00"),
+		Pagamento pagt2 = new PagamentoComBoleto(null, EstadoPagamento.PENDENTE, ped2, sdf.parse("20/10/2017 00:00"),
 				null);
 		ped2.setPagamento(pagt2);
 
