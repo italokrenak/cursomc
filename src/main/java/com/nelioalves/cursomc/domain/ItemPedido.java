@@ -1,6 +1,8 @@
 package com.nelioalves.cursomc.domain;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.util.Locale;
 
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
@@ -30,7 +32,7 @@ public class ItemPedido implements Serializable {
 		this.quantidade = quantidade;
 		this.preco = preco;
 	}
-	
+
 	public double getSubTotal() {
 		return (this.preco - this.desconto) * this.quantidade;
 	}
@@ -39,7 +41,7 @@ public class ItemPedido implements Serializable {
 	public Pedido getPedido() {
 		return this.getPedido();
 	}
-	
+
 	public void setPedido(Pedido pedido) {
 		this.id.setPedido(pedido);
 	}
@@ -47,7 +49,7 @@ public class ItemPedido implements Serializable {
 	public Produto getProduto() {
 		return this.id.getProduto();
 	}
-	
+
 	public void setProduto(Produto produto) {
 		this.id.setProduto(produto);
 	}
@@ -107,6 +109,22 @@ public class ItemPedido implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
+	}
+
+	@Override
+	public String toString() {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+
+		StringBuilder builder = new StringBuilder();
+		builder.append(this.getProduto().getNome());
+		builder.append(", Qte: ");
+		builder.append(this.getQuantidade());
+		builder.append(", Preço Unitário: ");
+		builder.append(nf.format(this.getPreco()));
+		builder.append(", Subtotal: ");
+		builder.append(nf.format(this.getSubTotal()));
+		builder.append("\n");
+		return builder.toString();
 	}
 
 }
