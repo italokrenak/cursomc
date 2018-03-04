@@ -24,7 +24,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	private Environment env;
 	
 	private static final String[] PUBLIC_MACTHERS = {
-			"/h2-conole/**",
+			"/h2-console/**",
 			
 	};
 	
@@ -37,9 +37,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity httpSecurity) throws Exception {
 		
 		if (Arrays.asList(env.getActiveProfiles()).contains("test")) {
-			httpSecurity.cors().and().csrf().disable();
+			httpSecurity.headers().frameOptions().disable();
 		}
 		
+		httpSecurity.cors().and().csrf().disable();
 		httpSecurity.authorizeRequests()
 			.antMatchers(HttpMethod.GET, PUBLIC_MATCHERS_GET).permitAll()
 			.antMatchers(PUBLIC_MACTHERS).permitAll()
