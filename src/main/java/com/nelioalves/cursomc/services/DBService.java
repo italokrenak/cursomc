@@ -20,6 +20,7 @@ import com.nelioalves.cursomc.domain.PagamentoComCartao;
 import com.nelioalves.cursomc.domain.Pedido;
 import com.nelioalves.cursomc.domain.Produto;
 import com.nelioalves.cursomc.domain.enums.EstadoPagamento;
+import com.nelioalves.cursomc.domain.enums.Perfil;
 import com.nelioalves.cursomc.domain.enums.TipoCliente;
 import com.nelioalves.cursomc.repositories.CategoriaRepository;
 import com.nelioalves.cursomc.repositories.CidadeRepository;
@@ -60,7 +61,7 @@ public class DBService {
 
 	@Autowired
 	private ItemPedidoRepository itemPedidoRepository;
-	
+
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
 
@@ -128,14 +129,21 @@ public class DBService {
 				TipoCliente.PESSOAFISICA, this.bCryptPasswordEncoder.encode("123"));
 		cli1.getTelefones().addAll(Arrays.asList("34799333", "986990868"));
 
+		Cliente cli2 = new Cliente(null, "Gercina Barbosa", "italo_leitao@atlantico.com.br", "38877720409",
+				TipoCliente.PESSOAFISICA, this.bCryptPasswordEncoder.encode("123"));
+		cli2.getTelefones().addAll(Arrays.asList("347999999", "988775566"));
+		cli2.addPerfil(Perfil.ADMIN);
+
 		Endereco end1 = new Endereco(null, "Rua flores", "138", "Proximo ao colegio CERE", "Antonio Bezerra",
 				"60351680", cli1, cidade1);
 		Endereco end2 = new Endereco(null, "Ave Matos", "686", "Parque Timbu", "Castelao", "12345687", cli1, cidade2);
+		Endereco end3 = new Endereco(null, "Ave Matos II", "999", null, "Centro", "12", cli2, cidade2);
 
 		cli1.getEnderecos().addAll(Arrays.asList(end1, end2));
+		cli2.getEnderecos().addAll(Arrays.asList(end3));
 
-		this.clienteRepository.save(Arrays.asList(cli1));
-		this.enderecoRepository.save(Arrays.asList(end1, end2));
+		this.clienteRepository.save(Arrays.asList(cli1, cli2));
+		this.enderecoRepository.save(Arrays.asList(end1, end2, end3));
 
 		// Pedido
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm");
