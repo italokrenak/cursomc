@@ -1,5 +1,6 @@
 package com.nelioalves.cursomc.services;
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,7 @@ import com.nelioalves.cursomc.security.UserSS;
 import com.nelioalves.cursomc.services.exceptions.AuthorizationException;
 import com.nelioalves.cursomc.services.exceptions.DataIntegrityException;
 import com.nelioalves.cursomc.services.exceptions.ObjectNotFoundException;
+import org.springframework.web.multipart.MultipartFile;
 
 @Service
 public class ClienteService {
@@ -39,6 +41,9 @@ public class ClienteService {
 	
 	@Autowired
 	private BCryptPasswordEncoder bCryptPasswordEncoder;
+
+	@Autowired
+	private S3Service s3Service;
 
 	public Cliente find(Integer id) {
 		UserSS user = UserService.authenticated();
@@ -123,5 +128,9 @@ public class ClienteService {
 	private void updateData(Cliente newObj, Cliente obj) {
 		newObj.setNome(obj.getNome());
 		newObj.setEmail(obj.getEmail());
+	}
+
+	public URI uploadProfilePicture(MultipartFile multipartFile) {
+		return this.s3Service.uploadFile(multipartFile);
 	}
 }
