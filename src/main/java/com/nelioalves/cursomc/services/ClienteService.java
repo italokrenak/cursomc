@@ -99,6 +99,23 @@ public class ClienteService {
 		return this.repository.findAll();
 	}
 
+	public Cliente findByEmail(String email) {
+		UserSS user = UserService.authenticated();
+
+		if (user == null || !user.hasRole(Perfil.ADMIN) && !email.equals(user.getUsername())) {
+			throw new AuthorizationException("Acesso negado");
+		}
+
+		Cliente cliente = this.repository.findByEmail(email);
+
+		if (cliente == null) {
+			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + user.getId()
+				+ ", Tipo: " + Cliente.class.getName());
+		}
+
+		return cliente;
+	}
+
 	public Page<Cliente> findPage(Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		return this.repository.findAll(pageRequest);
